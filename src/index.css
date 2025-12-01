@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* VoiceSlogan Dark Theme */
+    --background: 192 30% 8%;
+    --foreground: 180 8% 92%;
+
+    --card: 192 28% 12%;
+    --card-foreground: 180 8% 92%;
+
+    --popover: 192 28% 12%;
+    --popover-foreground: 180 8% 92%;
+
+    /* Teal/Cyan primary accent */
+    --primary: 180 65% 52%;
+    --primary-foreground: 192 30% 8%;
+
+    --secondary: 192 25% 18%;
+    --secondary-foreground: 180 8% 92%;
+
+    --muted: 192 25% 18%;
+    --muted-foreground: 180 5% 60%;
+
+    --accent: 180 65% 52%;
+    --accent-foreground: 192 30% 8%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 180 8% 92%;
+
+    --border: 192 25% 20%;
+    --input: 192 25% 18%;
+    --ring: 180 65% 52%;
+
+    --radius: 0.75rem;
+
+    /* Custom tokens for dashboard */
+    --success: 142 76% 36%;
+    --warning: 38 92% 50%;
+    --info: 199 89% 48%;
+    
+    /* Gold neon accent */
+    --gold: 45 100% 51%;
+    --gold-glow: 45 100% 60%;
+    
+    /* Recording states */
+    --recording: 0 84% 60%;
+    --recording-glow: 0 84% 60% / 0.4;
+    
+    /* Chart colors */
+    --chart-primary: 180 65% 52%;
+    --chart-secondary: 199 89% 48%;
+    --chart-tertiary: 142 76% 36%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(180 65% 52%), hsl(199 89% 48%));
+    --gradient-card: linear-gradient(135deg, hsl(192 28% 12%), hsl(192 25% 15%));
+    
+    /* Shadows */
+    --shadow-glow: 0 0 30px hsl(var(--primary) / 0.3);
+    --shadow-card: 0 4px 20px hsl(192 30% 4% / 0.5);
+    
+    /* Gold neon glow shadows */
+    --gold-glow-soft: 0 0 20px hsl(var(--gold-glow) / 0.3);
+    --gold-glow-medium: 0 0 40px hsl(var(--gold-glow) / 0.5);
+    --gold-glow-intense: 0 0 60px hsl(var(--gold-glow) / 0.7);
+    --gold-glow-extreme: 0 0 80px hsl(var(--gold-glow) / 0.9);
+    --gold-glow-inner: inset 0 0 30px hsl(var(--gold-glow) / 0.4);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
