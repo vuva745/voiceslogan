@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Mic, Square } from "lucide-react";
 import AudioWaveform from "@/components/dashboard/AudioWaveform";
 import { uploadSloganAudio, getSponsorConfig } from "@/lib/mocks/stubs";
+import { VoiceSloganProgress } from "@/components/dashboard/VoiceSloganProgress";
 
 /**
  * Tab 1: Live Slogan Recorder
@@ -18,6 +20,8 @@ const LiveRecorderTab = () => {
   const [recordingTime, setRecordingTime] = useState(0);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioUrl, setAudioUrl] = useState<string>("");
+  const [voicesloganCount, setVoiceSloganCount] = useState(0);
+  const [targetCount, setTargetCount] = useState(100);
   const timerRef = useRef<NodeJS.Timeout>();
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -25,6 +29,22 @@ const LiveRecorderTab = () => {
   const maxDuration = 12; // seconds
   
   const sponsor = getSponsorConfig();
+
+  const campaignFlow = { voicesloganCount, targetCount };
+  const unlockStatus = voicesloganCount >= targetCount;
+
+  /** Call when a VoiceSlogan is successfully recorded and saved (e.g. after upload). Pass to child recorder as onNewVoiceSlogan. */
+  const handleNewVoiceSlogan = () => {
+    setVoiceSloganCount((prev) => prev + 1);
+  };
+  const progressStatus =
+    voicesloganCount >= targetCount
+      ? "Target reached"
+      : voicesloganCount === 0
+      ? "Not started"
+      : voicesloganCount / targetCount >= 0.5
+      ? "On track"
+      : "In progress";
 
   // Cleanup audio URL to prevent memory leaks
   useEffect(() => {
@@ -252,6 +272,7 @@ const LiveRecorderTab = () => {
 
       await uploadSloganAudio(audioBlob, meta);
       toast.success("Slogan submitted successfully!");
+      handleNewVoiceSlogan();
       handleSpeakAgain();
     } catch (error) {
       toast.error("Failed to submit slogan");
@@ -316,6 +337,35 @@ const LiveRecorderTab = () => {
 
           <p className="text-foreground">Tap the button and speak your slogan</p>
         </div>
+      </Card>
+
+      {/* VoiceSlogan Progress */}
+      <Card className="p-6 bg-card border border-border space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <h3 className="text-lg font-bold text-foreground">VoiceSlogan Progress</h3>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Target</span>
+            <Input
+              type="number"
+              min={1}
+              className="w-24 h-8 py-1 px-2 text-sm"
+              value={targetCount}
+              onChange={(e) => {
+                const value = parseInt(e.target.value, 10);
+                if (Number.isNaN(value)) {
+                  setTargetCount(1);
+                } else {
+                  setTargetCount(Math.max(1, value));
+                }
+              }}
+            />
+          </div>
+        </div>
+        <VoiceSloganProgress
+          voicesloganCount={campaignFlow.voicesloganCount}
+          targetCount={campaignFlow.targetCount}
+          status={unlockStatus ? "completed" : "almost_there"}
+        />
       </Card>
 
       {/* Audio Preview - Hidden in mockup but kept for functionality */}

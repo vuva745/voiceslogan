@@ -196,6 +196,27 @@ export const uploadSloganAudio = async (blob: Blob, meta: any): Promise<any> => 
 };
 
 // ============================================================================
+// NEOCARD STATUS STUBS
+// ============================================================================
+
+/**
+ * sendStatusToNeoCard - Mock status sender
+ *
+ * TODO: Replace with NeoCard status API
+ * Expected integration: import { sendStatus } from '@/lib/neocard'
+ *
+ * @param payload - Current engagement/progress status
+ */
+export const sendStatusToNeoCard = (payload: {
+  voicesloganCount: number;
+  targetCount: number;
+  status: string;
+}) => {
+  console.log("TODO: Replace with NeoCard status sender");
+  console.log("NeoCard status payload:", payload);
+};
+
+// ============================================================================
 // SPONSOR CONFIG STUBS
 // ============================================================================
 
