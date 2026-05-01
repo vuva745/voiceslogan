@@ -209,6 +209,15 @@ const TokenExportTab = () => {
             {/* Grid lines */}
             <line x1="0" y1="0" x2="0" y2="300" stroke="hsl(var(--border))" strokeWidth="1" />
             <line x1="0" y1="300" x2="700" y2="300" stroke="hsl(var(--border))" strokeWidth="1" />
+
+            {/* Value labels aligned where x-axis starts */}
+            <g fill="hsl(var(--muted-foreground))" fontSize="12" textAnchor="end">
+              <text x="-8" y="16">3,000</text>
+              <text x="-8" y="76">2,000</text>
+              <text x="-8" y="136">1,000</text>
+              <text x="-8" y="216">200</text>
+              <text x="-8" y="296">0</text>
+            </g>
             
             {/* Data points and lines - Matching mockup (SUN: ~100, MON: ~300, TUE: ~700, WED: ~1100, THU: ~1700, FRI: ~2400, SAT: ~2400) */}
             {[
@@ -240,6 +249,7 @@ const TokenExportTab = () => {
                 />
               </g>
             ))}
+
           </svg>
           {/* X-axis labels */}
           <div className="flex justify-between mt-2 text-sm text-muted-foreground">
@@ -250,14 +260,6 @@ const TokenExportTab = () => {
             <span>THU</span>
             <span>FRI</span>
             <span>SAT</span>
-          </div>
-          {/* Y-axis labels */}
-          <div className="absolute left-0 top-0 h-64 flex flex-col justify-between text-xs text-muted-foreground -ml-10">
-            <span>3,000</span>
-            <span>2,000</span>
-            <span>1,000</span>
-            <span>200</span>
-            <span>0</span>
           </div>
         </div>
       </Card>

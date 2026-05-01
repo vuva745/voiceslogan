@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNeoNodeLiveFeed } from "@/lib/mocks/stubs";
 import FeedItem from "@/components/dashboard/FeedItem";
 import AudioWaveform from "@/components/dashboard/AudioWaveform";
-import { getAvatarForName } from "@/lib/utils";
 
 /**
  * Tab 2: Live Slogan Feed
@@ -16,40 +15,41 @@ import { getAvatarForName } from "@/lib/utils";
 const LiveFeedTab = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSponsor, setSelectedSponsor] = useState<string>("all");
+  const [sortBy, setSortBy] = useState<"time" | "score">("time");
+  const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
   const [isPaused, setIsPaused] = useState(false);
   const { items, isLive, togglePause } = useNeoNodeLiveFeed();
 
   const sponsors = ["DOXIA", "genesis", "METRON"];
   
-  const filteredItems = items.filter((item) => {
-    const matchesSearch = 
-      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.uid.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.transcript.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesSponsor = selectedSponsor === "all" || item.sponsor === selectedSponsor;
-    
-    return matchesSearch && matchesSponsor;
-  });
+  const sortedAndFilteredItems = useMemo(() => {
+    const filteredItems = items.filter((item) => {
+      const query = searchQuery.trim().toLowerCase();
+      const matchesSearch =
+        item.name.toLowerCase().includes(query) ||
+        item.uid.toLowerCase().includes(query) ||
+        item.transcript.toLowerCase().includes(query) ||
+        item.sponsor.toLowerCase().includes(query);
 
-  // Female avatar images for live feed (ensuring each female gets a different one)
-  const femaleAvatars = [
-    '/avatars/ChatGPT Image Dec 1, 2025, 10_11_28 AM.png',
-    '/avatars/ChatGPT Image Dec 1, 2025, 10_13_59 AM.png',
-    '/avatars/ChatGPT Image Dec 1, 2025, 10_15_57 AM.png',
-    '/avatars/ChatGPT Image Dec 1, 2025, 10_16_56 AM.png',
-    '/avatars/ChatGPT Image Dec 1, 2025, 10_17_58 AM.png',
-  ];
+      const matchesSponsor = selectedSponsor === "all" || item.sponsor === selectedSponsor;
 
-  // Exact items from mockup - assigning different female avatars to each female
-  const mockupItems = [
-    { name: "Lauren Weaver", transcript: "Healing starts at home.", timestamp: "50 seconds ago", avatar: femaleAvatars[0] },
-    { name: "Jack Palmer", transcript: "Care, respect, and dignity.", timestamp: "2 minutes ago", avatar: getAvatarForName("Jack Palmer") },
-    { name: "Aisha Khan", transcript: "Together, we heal.", timestamp: "3 minutes ago", avatar: femaleAvatars[1] },
-    { name: "Marcus Reed", transcript: "Your health, our mission.", timestamp: "5 minutes ago", avatar: getAvatarForName("Marcus Reed") },
-    { name: "Emma Clark", transcript: "Caring for every moment.", timestamp: "6 minutes ago", avatar: femaleAvatars[2] },
-    { name: "Taylor Harris", transcript: "Empathy in every step.", timestamp: "8 minutes ago", avatar: femaleAvatars[3] },
-  ];
+      return matchesSearch && matchesSponsor;
+    });
+
+    const sortedItems = [...filteredItems].sort((a, b) => {
+      if (sortBy === "score") {
+        const scoreA = typeof a.score === "number" ? a.score : 0;
+        const scoreB = typeof b.score === "number" ? b.score : 0;
+        return sortOrder === "desc" ? scoreB - scoreA : scoreA - scoreB;
+      }
+
+      const timeA = typeof a.createdAt === "number" ? a.createdAt : 0;
+      const timeB = typeof b.createdAt === "number" ? b.createdAt : 0;
+      return sortOrder === "desc" ? timeB - timeA : timeA - timeB;
+    });
+
+    return sortedItems;
+  }, [items, searchQuery, selectedSponsor, sortBy, sortOrder]);
 
   return (
     <div className="space-y-6">
@@ -57,27 +57,58 @@ const LiveFeedTab = () => {
         {/* Left: Feed List - Perfect match to mockup */}
         <Card className="p-6 bg-card border border-border flex flex-col">
           <h3 className="text-lg font-bold mb-4 text-foreground">Live Slogan Feed</h3>
+
+          <div className="grid sm:grid-cols-2 gap-2 mb-4">
+            <input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search name, UID, transcript, sponsor"
+              className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+              aria-label="Search feed"
+            />
+            <select
+              value={selectedSponsor}
+              onChange={(e) => setSelectedSponsor(e.target.value)}
+              className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+              aria-label="Filter by sponsor"
+            >
+              <option value="all">All sponsors</option>
+              {sponsors.map((sponsor) => (
+                <option key={sponsor} value={sponsor}>
+                  {sponsor}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-2 mb-4">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as "time" | "score")}
+              className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+              aria-label="Sort feed by"
+            >
+              <option value="time">Sort by time</option>
+              <option value="score">Sort by score</option>
+            </select>
+            <select
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value as "desc" | "asc")}
+              className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+              aria-label="Sort order"
+            >
+              <option value="desc">Descending</option>
+              <option value="asc">Ascending</option>
+            </select>
+          </div>
+
           <div className="space-y-4 flex-1">
-            {mockupItems.map((item, i) => (
-              <div key={i} className="flex items-start gap-3 pb-4 border-b border-border/50 last:border-0 last:pb-0">
-                <img
-                  src={item.avatar}
-                  alt={item.name}
-                  className="w-12 h-12 rounded-full flex-shrink-0 object-cover"
-                />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm text-foreground leading-tight">{item.name}</p>
-                      <p className="text-sm text-foreground mt-1.5 leading-relaxed">"{item.transcript}"</p>
-                    </div>
-                    <span className="text-xs text-muted-foreground whitespace-nowrap ml-3 flex-shrink-0">
-                      {item.timestamp}
-                    </span>
-                  </div>
-                </div>
-              </div>
+            {sortedAndFilteredItems.map((item) => (
+              <FeedItem key={item.id} item={item} />
             ))}
+            {sortedAndFilteredItems.length === 0 && (
+              <p className="text-sm text-muted-foreground">No feed items match the current filters.</p>
+            )}
           </div>
           
           {/* Bottom left: VIGELOGAN and SPUNSORS - Matching mockup exactly */}

@@ -121,6 +121,8 @@ export const useNeoNodeLiveFeed = () => {
           "Empathy in every step.",
         ][i],
         timestamp: i === 0 ? "50 seconds ago" : i === 1 ? "2 minutes ago" : i === 2 ? "3 minutes ago" : i === 3 ? "5 minutes ago" : i === 4 ? "6 minutes ago" : "8 minutes ago",
+        createdAt: Date.now() - i * 60_000,
+        score: 90 - i * 5,
         sponsor: ["DOXIA", "METRON", "genesis"][i % 3],
         avatar: getAvatarForName(name),
       };
@@ -146,6 +148,8 @@ export const useNeoNodeLiveFeed = () => {
           "Healing with heart",
         ][Math.floor(Math.random() * 5)],
         timestamp: "just now",
+        createdAt: Date.now(),
+        score: Math.floor(Math.random() * 41) + 60,
         sponsor: ["DOXIA", "METRON", "genesis"][Math.floor(Math.random() * 3)],
         avatar: getAvatarForName(fullName),
       };
