@@ -10,10 +10,6 @@ import { VoiceSloganProgress } from "@/components/dashboard/VoiceSloganProgress"
 
 /**
  * Tab 1: Live Slogan Recorder
- * 
- * Integration Notes:
- * - Wire uploadSloganAudio() to NeoCard/NeoVault uploader
- * - Wire getSponsorConfig() to sponsor dashboard integration
  */
 const LiveRecorderTab = () => {
   const [isRecording, setIsRecording] = useState(false);

@@ -9,11 +9,6 @@ import JSZip from "jszip";
 
 /**
  * Tab 7: Token Engine / Export
- * 
- * Integration Notes:
- * - Wire exportTokensBatch() to real token generation
- * - Add DAB™ packaging logic
- * - Implement hash verification against blockchain
  */
 const TokenExportTab = () => {
   const [exporting, setExporting] = useState(false);
@@ -63,7 +58,6 @@ const TokenExportTab = () => {
   }, [exporting, handleExportTokens]);
 
   const handleVerifyHash = (tokenId: string) => {
-    // Integration target: real blockchain verification
     const verified = Math.random() > 0.1; // 90% success rate for demo
     setVerificationResults((prev) => ({ ...prev, [tokenId]: verified }));
     toast[verified ? "success" : "error"](

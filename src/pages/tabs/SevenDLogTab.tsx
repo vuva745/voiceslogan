@@ -8,10 +8,6 @@ import { Download, FileJson, FileSpreadsheet, Shield } from "lucide-react";
 
 /**
  * Tab 4: 7D Slogan Log
- * 
- * Integration Notes:
- * - Wire useNeoVaultLogger() to NeoVault datalogger script
- * - Add real blockchain proof verification
  */
 const SevenDLogTab = () => {
   const { exportCSV, exportJSON } = useNeoVaultLogger();
@@ -57,7 +53,6 @@ const SevenDLogTab = () => {
   };
 
   const handleVerifyHash = (hash: string) => {
-    // Integration target: real blockchain verification
     console.log("Verifying hash:", hash);
     toast.success("Hash verified successfully");
   };

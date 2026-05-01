@@ -65,11 +65,10 @@ export interface TokenBatchResult {
 /**
  * INTEGRATION STUBS
  * 
- * This file contains all the stub functions and hooks that need to be replaced
- * with actual NeoCard/NeoVault/NeoNode/Sponsor/Audit integrations.
+ * This file contains stub functions and hooks for
+ * NeoCard/NeoVault/NeoNode/Sponsor/Audit integrations.
  * 
- * Each function is clearly marked with TODO comments indicating what needs
- * to be replaced and with which actual implementation.
+ * Each function is documented with its intended purpose.
  */
 
 // ============================================================================
@@ -79,8 +78,7 @@ export interface TokenBatchResult {
 /**
  * useNeoVaultLogger - Mock logger hook
  * 
- * Integration target: NeoVault datalogger script
- * Expected integration: import { useDataLogger } from '@/lib/neovault'
+ * NeoVault datalogger script placeholder
  * 
  * @returns {Object} Logger API with logs and export functions
  */
@@ -155,8 +153,7 @@ export const useNeoVaultLogger = () => {
 /**
  * useNeoNodeLiveFeed - Mock live feed hook with SSE/websocket simulation
  * 
- * Integration target: NeoNode websocket helper
- * Expected integration: import { useWebSocketFeed } from '@/lib/neonode'
+ * NeoNode websocket helper placeholder
  * 
  * @returns {Object} Feed API with items, live status, and controls
  */
@@ -239,15 +236,14 @@ export const useNeoNodeLiveFeed = () => {
 /**
  * uploadSloganAudio - Mock audio upload function
  * 
- * Integration target: NeoCard/NeoVault uploader
- * Expected integration: import { uploadAudio } from '@/lib/neocard'
+ * NeoCard/NeoVault uploader placeholder
  * 
  * @param {Blob} blob - Audio blob to upload
  * @param {Object} meta - Metadata (uid, sponsor, timestamp, duration)
  * @returns {Promise} Upload result
  */
 export const uploadSloganAudio = async (blob: Blob, meta: UploadMeta): Promise<UploadResult> => {
-  console.log("Integration note: wire NeoCard/NeoVault uploader");
+  console.log("Mock NeoCard/NeoVault uploader");
   console.log("Upload params:", { blobSize: blob.size, meta });
   
   // Simulate upload delay
@@ -267,8 +263,7 @@ export const uploadSloganAudio = async (blob: Blob, meta: UploadMeta): Promise<U
 /**
  * sendStatusToNeoCard - Mock status sender
  *
- * Integration target: NeoCard status API
- * Expected integration: import { sendStatus } from '@/lib/neocard'
+ * NeoCard status API placeholder
  *
  * @param payload - Current engagement/progress status
  */
@@ -277,7 +272,7 @@ export const sendStatusToNeoCard = (payload: {
   targetCount: number;
   status: string;
 }) => {
-  console.log("Integration note: wire NeoCard status sender");
+  console.log("Mock NeoCard status sender");
   console.log("NeoCard status payload:", payload);
 };
 
@@ -288,13 +283,12 @@ export const sendStatusToNeoCard = (payload: {
 /**
  * getSponsorConfig - Mock sponsor configuration getter
  * 
- * Integration target: Sponsor dashboard integration
- * Expected integration: import { getSponsorData } from '@/lib/sponsor'
+ * Sponsor dashboard integration placeholder
  * 
  * @returns {Object} Sponsor configuration (logo, name, tagline)
  */
 export const getSponsorConfig = () => {
-  console.log("Integration note: wire sponsor dashboard integration");
+  console.log("Mock sponsor dashboard integration");
   
   return {
     name: "NeoCare",
@@ -310,14 +304,13 @@ export const getSponsorConfig = () => {
 /**
  * callVoiceMatchAI - Mock AI voice matching function
  * 
- * Integration target: NeoNode AI microservice
- * Expected integration: import { analyzeVoice } from '@/lib/neonode/ai'
+ * NeoNode AI microservice placeholder
  * 
  * @param {string} audioId - Audio ID to analyze
  * @returns {Object} AI analysis result (match%, emotion, accuracy, passed)
  */
 export const callVoiceMatchAI = (audioId: string): VoiceMatchResult => {
-  console.log("Integration note: wire NeoNode AI microservice");
+  console.log("Mock NeoNode AI microservice");
   console.log("Analyzing audio:", audioId);
   
   const match = Math.floor(Math.random() * 40) + 50;
@@ -342,14 +335,13 @@ export const callVoiceMatchAI = (audioId: string): VoiceMatchResult => {
 /**
  * exportTokensBatch - Mock token batch export
  * 
- * Integration target: token generation and blockchain packaging
- * Expected integration: import { generateTokens } from '@/lib/token-engine'
+ * Token generation and blockchain packaging placeholder
  * 
  * @param {Array} items - Items to export as tokens
  * @returns {Promise} Export result with transaction hash
  */
 export const exportTokensBatch = async (items: TokenItem[]): Promise<TokenBatchResult> => {
-  console.log("Integration note: wire token generation");
+  console.log("Mock token generation");
   console.log("Exporting items:", items);
   
   // Simulate export delay

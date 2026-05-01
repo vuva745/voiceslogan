@@ -9,11 +9,6 @@ import { Sparkles, Loader2 } from "lucide-react";
 
 /**
  * Tab 6: WinnerSelect AI
- * 
- * Integration Notes:
- * - Implement actual RNG algorithm
- * - Add fairness verification
- * - Integrate with Audit dashboard for winner approval
  */
 const WinnerSelectTab = () => {
   const [algorithm, setAlgorithm] = useState<"random" | "score" | "weighted" | "hybrid">("hybrid");

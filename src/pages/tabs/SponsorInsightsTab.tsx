@@ -7,10 +7,6 @@ import html2canvas from "html2canvas";
 
 /**
  * Tab 5: Sponsor Insights
- * 
- * Integration Notes:
- * - Wire to sponsor dashboard integration
- * - Add real analytics data source
  */
 const SponsorInsightsTab = () => {
   const contentRef = useRef<HTMLDivElement>(null);
