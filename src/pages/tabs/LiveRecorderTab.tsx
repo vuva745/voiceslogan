@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,9 +11,9 @@ import { VoiceSloganProgress } from "@/components/dashboard/VoiceSloganProgress"
 /**
  * Tab 1: Live Slogan Recorder
  * 
- * TODO Integration Points:
- * - Replace uploadSloganAudio() with NeoCard/NeoVault uploader
- * - Replace getSponsorConfig() with Sponsor dashboard integration
+ * Integration Notes:
+ * - Wire uploadSloganAudio() to NeoCard/NeoVault uploader
+ * - Wire getSponsorConfig() to sponsor dashboard integration
  */
 const LiveRecorderTab = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -92,24 +92,7 @@ const LiveRecorderTab = () => {
     };
   }, [isRecording]);
 
-  // Keyboard shortcut: Ctrl+R to start/stop recording
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
-        e.preventDefault();
-        if (isRecording) {
-          handleStop();
-        } else if (!audioBlob || recordingTime < maxDuration) {
-          handleStart();
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isRecording, audioBlob, recordingTime]);
-
-  const handleStart = async () => {
+  const handleStart = useCallback(async () => {
     if (isRecording) {
       return; // Already recording
     }
@@ -202,7 +185,10 @@ const LiveRecorderTab = () => {
       mediaRecorder.onerror = (event) => {
         console.error('MediaRecorder error:', event);
         toast.error("Recording error occurred");
-        handleStop();
+        if (mediaRecorder.state !== 'inactive') {
+          mediaRecorder.stop();
+        }
+        setIsRecording(false);
       };
 
       // Start recording
@@ -221,9 +207,9 @@ const LiveRecorderTab = () => {
       console.error("Error accessing microphone:", error);
       toast.error("Failed to access microphone. Please check permissions.");
     }
-  };
+  }, [isRecording, audioUrl]);
 
-  const handleStop = () => {
+  const handleStop = useCallback(() => {
     if (!isRecording) {
       return; // Not recording
     }
@@ -243,7 +229,24 @@ const LiveRecorderTab = () => {
         streamRef.current = null;
       }
     }
-  };
+  }, [isRecording]);
+
+  // Keyboard shortcut: Ctrl+R to start/stop recording
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+        e.preventDefault();
+        if (isRecording) {
+          handleStop();
+        } else if (!audioBlob || recordingTime < maxDuration) {
+          handleStart();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isRecording, audioBlob, recordingTime, maxDuration, handleStart, handleStop]);
 
   const handleSpeakAgain = () => {
     setRecordingTime(0);

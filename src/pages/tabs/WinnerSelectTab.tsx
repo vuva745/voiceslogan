@@ -10,7 +10,7 @@ import { Sparkles, Loader2 } from "lucide-react";
 /**
  * Tab 6: WinnerSelect AI
  * 
- * TODO Integration Points:
+ * Integration Notes:
  * - Implement actual RNG algorithm
  * - Add fairness verification
  * - Integrate with Audit dashboard for winner approval
@@ -27,6 +27,16 @@ const WinnerSelectTab = () => {
     "Olivia Reynolds", "Cameron Flores", "Sophia Lee", "Caleb Powell",
     "Emma Thompson", "James Wilson", "Ava Martinez", "Noah Anderson",
     "Isabella Garcia", "Lucas Brown", "Mia Davis", "Alexander Taylor"
+  ];
+  const algorithmOptions: Array<{
+    value: "random" | "score" | "weighted" | "hybrid";
+    label: string;
+    desc: string;
+  }> = [
+    { value: "random", label: "Random Selection", desc: "Pure RNG with no bias" },
+    { value: "score", label: "Score-Based", desc: "Weighted by AI match scores" },
+    { value: "weighted", label: "Weighted Distribution", desc: "Fair demographic balance" },
+    { value: "hybrid", label: "Hybrid Approach", desc: "Combines multiple factors" },
   ];
 
   const handleRunSimulation = async () => {
@@ -210,15 +220,10 @@ const WinnerSelectTab = () => {
           <div>
             <Label className="text-sm font-semibold mb-3 block">Selection Algorithm</Label>
             <div className="space-y-2">
-              {[
-                { value: "random", label: "Random Selection", desc: "Pure RNG with no bias" },
-                { value: "score", label: "Score-Based", desc: "Weighted by AI match scores" },
-                { value: "weighted", label: "Weighted Distribution", desc: "Fair demographic balance" },
-                { value: "hybrid", label: "Hybrid Approach", desc: "Combines multiple factors" },
-              ].map((algo) => (
+              {algorithmOptions.map((algo) => (
                 <button
                   key={algo.value}
-                  onClick={() => setAlgorithm(algo.value as any)}
+                  onClick={() => setAlgorithm(algo.value)}
                   className={`w-full text-left p-3 rounded-lg border transition-colors ${
                     algorithm === algo.value
                       ? "border-primary bg-primary/10"

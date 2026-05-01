@@ -8,8 +8,8 @@ import html2canvas from "html2canvas";
 /**
  * Tab 5: Sponsor Insights
  * 
- * TODO Integration Points:
- * - Replace with Sponsor dashboard integration
+ * Integration Notes:
+ * - Wire to sponsor dashboard integration
  * - Add real analytics data source
  */
 const SponsorInsightsTab = () => {

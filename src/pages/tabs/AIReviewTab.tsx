@@ -10,8 +10,8 @@ import { getAvatarForName } from "@/lib/utils";
 /**
  * Tab 3: AI VoiceMatch Review
  * 
- * TODO Integration Points:
- * - Replace callVoiceMatchAI() with NeoNode AI microservice
+ * Integration Notes:
+ * - Wire callVoiceMatchAI() to NeoNode AI microservice
  * - Add Audit.recordDecision() for approve/flag/reject actions
  */
 const AIReviewTab = () => {
@@ -39,7 +39,7 @@ const AIReviewTab = () => {
   });
 
   const handleApprove = useCallback((id: string) => {
-    // TODO: Replace with Audit.recordDecision(uid, "approve")
+    // Integration target: Audit.recordDecision(uid, "approve")
     console.log("Approving item:", id);
     toast.success("Item approved");
   }, []);
@@ -63,13 +63,13 @@ const AIReviewTab = () => {
   }, [selectedItemId, sortedItems, handleApprove]);
 
   const handleFlag = (id: string) => {
-    // TODO: Replace with Audit.recordDecision(uid, "flag")
+    // Integration target: Audit.recordDecision(uid, "flag")
     console.log("Flagging item:", id);
     toast.warning("Item flagged for review");
   };
 
   const handleReject = (id: string) => {
-    // TODO: Replace with Audit.recordDecision(uid, "reject")
+    // Integration target: Audit.recordDecision(uid, "reject")
     console.log("Rejecting item:", id);
     toast.error("Item rejected");
   };

@@ -9,6 +9,10 @@ interface AudioWaveformProps {
   className?: string;
 }
 
+type BrowserAudioWindow = Window & {
+  webkitAudioContext?: typeof AudioContext;
+};
+
 /**
  * AudioWaveform - Simple working audio waveform
  */
@@ -44,7 +48,7 @@ const AudioWaveform = ({
         streamRef.current = stream;
 
         // Create audio context
-        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+        const AudioContextClass = window.AudioContext || (window as BrowserAudioWindow).webkitAudioContext;
         const context = new AudioContextClass();
         contextRef.current = context;
 

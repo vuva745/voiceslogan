@@ -8,8 +8,8 @@ import AudioWaveform from "@/components/dashboard/AudioWaveform";
 /**
  * Tab 2: Live Slogan Feed
  * 
- * TODO Integration Points:
- * - Replace useNeoNodeLiveFeed() with NeoNode websocket helper
+ * Integration Notes:
+ * - Wire useNeoNodeLiveFeed() to NeoNode websocket helper
  * - Add real-time SSE/websocket connection
  */
 const LiveFeedTab = () => {

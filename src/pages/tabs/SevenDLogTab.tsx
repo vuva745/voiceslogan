@@ -9,13 +9,24 @@ import { Download, FileJson, FileSpreadsheet, Shield } from "lucide-react";
 /**
  * Tab 4: 7D Slogan Log
  * 
- * TODO Integration Points:
- * - Replace useNeoVaultLogger() with NeoVault datalogger script
+ * Integration Notes:
+ * - Wire useNeoVaultLogger() to NeoVault datalogger script
  * - Add real blockchain proof verification
  */
 const SevenDLogTab = () => {
   const { exportCSV, exportJSON } = useNeoVaultLogger();
-  const [selectedLog, setSelectedLog] = useState<any>(null);
+  type LogItem = {
+    id: string;
+    geo: string;
+    time: string;
+    timestamp: string;
+    nurseId: string;
+    device: string;
+    aiMatch: number;
+    hash: string;
+    bioLayer: string;
+  };
+  const [selectedLog, setSelectedLog] = useState<LogItem | null>(null);
   
   // Mock logs matching mockup data
   const logs = [
@@ -31,7 +42,7 @@ const SevenDLogTab = () => {
     { id: "432817", geo: "Apr 22, 1 Event", time: "Apr 19, 17 5:15 pm", timestamp: new Date().toISOString(), nurseId: "381", device: "S8KuEn", aiMatch: 55, hash: "0x6666...", bioLayer: "BIO-55" },
   ];
 
-  const handleViewProof = (log: any) => {
+  const handleViewProof = (log: LogItem) => {
     setSelectedLog(log);
   };
 
@@ -46,7 +57,7 @@ const SevenDLogTab = () => {
   };
 
   const handleVerifyHash = (hash: string) => {
-    // TODO: Replace with real blockchain verification
+    // Integration target: real blockchain verification
     console.log("Verifying hash:", hash);
     toast.success("Hash verified successfully");
   };

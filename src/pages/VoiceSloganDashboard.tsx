@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Mic, Radio, Brain, Database, TrendingUp, Trophy, Coins } from "lucide-react";
 import LiveRecorderTab from "./tabs/LiveRecorderTab";
@@ -32,7 +32,7 @@ const VoiceSloganDashboard = () => {
   ];
 
   // Keyboard shortcuts
-  const handleKeyDown = (e: KeyboardEvent) => {
+  const handleKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
     const num = parseInt(e.key);
     if (num >= 1 && num <= 7) {
       setActiveTab(tabs[num - 1].id);
@@ -42,7 +42,7 @@ const VoiceSloganDashboard = () => {
   return (
     <div 
       className="min-h-screen bg-background text-foreground flex"
-      onKeyDown={handleKeyDown as any}
+      onKeyDown={handleKeyDown}
       tabIndex={0}
     >
       {/* Left Sidebar Navigation */}
